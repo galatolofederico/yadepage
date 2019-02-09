@@ -1,8 +1,9 @@
 let sha256 = require('js-sha256');
 
 function generator(masterPassword, login, config = {}){
+    config = sanitize(config)
     return new Promise(async (res, rej) => {
-        let h1 = sha256.hmac.update(masterPassword, login).array()
+        let h1 = sha256.hmac.update(masterPassword, config.salt || document.defaultConfig.generation.salt).array()
         let h2 = sha256.hmac.update(h1, login).array()
         
         let input = h2
@@ -33,7 +34,7 @@ function getGenHash(input, salt, config){
             salt: salt,
             time:  config.iterations || document.defaultConfig.generation.iterations,
             mem:  config.memorySize || document.defaultConfig.generation.memorySize, 
-            hashLen: config.hashLengh || document.defaultConfig.generation.hashLengh,
+            hashLen: config.hashLength || document.defaultConfig.generation.hashLength,
             parallelism: 1,
             type: config.argonType || document.defaultConfig.generation.argonType,
             distPath: 'libs/argon2-browser/dist'
@@ -45,4 +46,13 @@ function getGenHash(input, salt, config){
     }) 
 }
 
-generator("MasterPassword", "federico@google.com").then(console.log)
+function sanitize(config){
+    if(config.concatenations) config.concatenations = Number.parseInt(config.concatenations)
+    if(config.iterations) config.iterations = Number.parseInt(config.iterations)
+    if(config.salt) config.salt = config.salt.toString()
+    if(config.memorySize) config.memorySize = Number.parseInt(config.memorySize)
+    if(config.hashLength) config.hashLength = Number.parseInt(config.hashLength)
+    return config
+}
+
+document.generator = generator
