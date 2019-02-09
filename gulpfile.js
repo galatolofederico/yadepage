@@ -1,17 +1,22 @@
-var gulp = require("gulp");
-var babel = require("gulp-babel");
-var browserify = require('gulp-browserify');
+const gulp = require("gulp");
+const babel = require("gulp-babel");
+const browserify = require('gulp-browserify');
+const del = require("del")
+const buildDir = "./dist/"
 
+function clean(){
+    return del([buildDir]);
+}
 
 function generator(){
-   return gulp.src(["src/generator.js"])
+   return gulp.src(["src/js/**/*"])
     .pipe(babel({
     }))
     .pipe(browserify({
     }))
-    .pipe(gulp.dest("dist"))
+    .pipe(gulp.dest(buildDir+"/js"))
 }
 
 
-exports.build = gulp.series(generator)
+exports.build = gulp.series(clean, generator)
 exports.default = exports.build
