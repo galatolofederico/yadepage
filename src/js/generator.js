@@ -1,11 +1,17 @@
+let sha256 = require('js-sha256');
+
 function generator(masterPassword, login, config = {}){
     return new Promise(async (res, rej) => {
-        let masterHash = await getGenHash(masterPassword, document.defaultConfig.generation.salt, config)
-        let salts = await getSalts(login, config)
-        let h1 = await getGenHash(masterHash, salts[0], config)
-        let h2 = await getGenHash(login, salts[1], config)
-        let h3 = await getGenHash(h1+h2, salts[2], config)
-        res(getPassword(h3, config.useSymbols || false))
+        let h1 = sha256.hmac.update(masterPassword, login).array()
+        let h2 = sha256.hmac.update(h1, login).array()
+        
+        let input = h2
+        let salt = sha256.update(login).array()
+        for(let i = 0;i < (config.concatenations || document.defaultConfig.generation.concatenations);i++){
+            input = await getGenHash(input, salt, config)
+            salt = sha256.update(salt).array()
+        }
+        res(getPassword(input, config.useSymbols))
     })
 }
 
@@ -19,16 +25,6 @@ function getPassword(hash, useSymbols){
     return str
 }
 
-async function getSalts(login, config){
-    let salts = []
-    let currentArg = login
-    for(let i = 0, salt = "";i < 3;i++){
-        salt = await getGenHash(currentArg, document.defaultConfig.generation.salt, config)
-        salts.push(salt)
-        currentArg = salt
-    }
-    return salts
-}
 
 function getGenHash(input, salt, config){
     return new Promise((res, rej) => {
