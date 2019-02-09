@@ -14,7 +14,7 @@
                     <h5 class="col-12 text-center text-muted">Yet Another DEterministic PAssword GEnerator</h5>
             </div>
 
-            <form>
+            <form class="col-10 mx-auto">
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label">MasterPassword</label>
                     <div class="input-group col-sm-10">
@@ -46,7 +46,7 @@
                     <label class="col-sm-2 col-form-label">Iterations</label>
                     <div class="input-group col-sm-10">
                         <div class="input-group-prepend">
-                                <span class="input-group-text badge-fixed-width"><i class="fas fa-cogs mx-auto"></i></span>
+                                <span class="input-group-text badge-fixed-width"><i class="fas fa-undo mx-auto"></i></span>
                         </div>
                         <input id="Iterations" type="text" class="form-control" aria-label="Iterations">                    
                     </div>
@@ -78,11 +78,16 @@
                         <input id="HashLength" type="text" class="form-control" aria-label="HashLength">                    
                     </div>
                 </div>
+                <div class="row">
+                    <button type="submit" class="btn btn-primary mx-auto">Generate <i class="fas fa-cogs"></i></button>
+                </div>
             </form>
 
 
         </div>
         <script src="libs/argon2-browser/lib/argon2.js"></script>
-        <!-- <script src="js/generator.js"></script> -->
+        <script src="config.js"></script>
+        <script src="js/generator.js"></script>
+        <script src="js/main.js"></script>
     </body>
 </html> 
