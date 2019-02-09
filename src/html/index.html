@@ -6,92 +6,93 @@
         <script defer src="libs/@fortawesome/fontawesome-free/js/all.min.js"></script> 
     </head>
     <body class="bg-light">
-        <div clas="container">
+        <div class="container">
             <div class="row">
                     <h1 class="col-12 text-center">yadepage</h1>
             </div>
             <div class="row">
                     <h5 class="col-12 text-center text-muted">Yet Another DEterministic PAssword GEnerator</h5>
             </div>
-
-            <form class="col-10 mx-auto">
-                <div class="form-group row mt-5">
-                    <label class="col-sm-2 col-form-label">MasterPassword</label>
-                    <div class="input-group col-sm-10">
-                        <div class="input-group-prepend">
-                                <span class="input-group-text badge-fixed-width"><i class="fas fa-key mx-auto"></i></span>
+            <div class="row">
+                <form class="col-10 mx-auto" onsubmit="return false">
+                    <div class="form-group row mt-5">
+                        <label class="col-lg-2 col-form-label">Master Password</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-key mx-auto"></i></span>
+                            </div>
+                            <input id="masterPassword" type="text" class="form-control" aria-label="MasterPassword">                    
                         </div>
-                        <input id="MasterPassword" type="text" class="form-control" aria-label="MasterPassword">                    
                     </div>
-                </div>
-                <div class="form-group row mt-5">
-                    <label class="col-sm-2 col-form-label">Username</label>
-                    <div class="input-group col-sm-10">
-                        <div class="input-group-prepend">
-                                <span class="input-group-text badge-fixed-width"><i class="fas fa-user mx-auto"></i></span>
+                    <div class="form-group row mt-5">
+                        <label class="col-lg-2 col-form-label">Username</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-user mx-auto"></i></span>
+                            </div>
+                            <input id="username" type="text" class="form-control" aria-label="Username">                    
                         </div>
-                        <input id="Username" type="text" class="form-control" aria-label="Username">                    
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Service</label>
-                    <div class="input-group col-sm-10">
-                        <div class="input-group-prepend">
-                                <span class="input-group-text badge-fixed-width"><i class="fas fa-globe mx-auto"></i></span>
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">Service</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-globe mx-auto"></i></span>
+                            </div>
+                            <input id="service" type="text" class="form-control" aria-label="Service">                    
                         </div>
-                        <input id="Service" type="text" class="form-control" aria-label="Service">                    
                     </div>
-                </div>
-                <div class="form-group row mt-5">
-                    <label class="col-sm-2 col-form-label">Concatenations</label>
-                    <div class="input-group col-sm-10">
-                        <div class="input-group-prepend">
-                                <span class="input-group-text badge-fixed-width"><i class="fas fa-clipboard-list"></i></span>
+                    <div class="form-group row mt-5">
+                        <label class="col-lg-2 col-form-label">Concatenations</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-clipboard-list mx-auto"></i></span>
+                            </div>
+                            <input id="concatenations" type="text" class="form-control" aria-label="Concatenations">                    
                         </div>
-                        <input id="Concatenations" type="text" class="form-control" aria-label="Concatenations">                    
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Iterations</label>
-                    <div class="input-group col-sm-10">
-                        <div class="input-group-prepend">
-                                <span class="input-group-text badge-fixed-width"><i class="fas fa-undo mx-auto"></i></span>
+                    
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">Iterations</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-undo mx-auto"></i></span>
+                            </div>
+                            <input id="iterations" type="text" class="form-control" aria-label="Iterations">                    
                         </div>
-                        <input id="Iterations" type="text" class="form-control" aria-label="Iterations">                    
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Salt</label>
-                    <div class="input-group col-sm-10">
-                        <div class="input-group-prepend">
-                                <span class="input-group-text badge-fixed-width"><i class="fas fa-user-secret mx-auto"></i></span>
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">Salt</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-user-secret mx-auto"></i></span>
+                            </div>
+                            <input id="salt" type="text" class="form-control" aria-label="Salt">                    
                         </div>
-                        <input id="Salt" type="text" class="form-control" aria-label="Salt">                    
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Memory Size</label>
-                    <div class="input-group col-sm-10">
-                        <div class="input-group-prepend">
-                                <span class="input-group-text badge-fixed-width"><i class="fas fa-memory mx-auto"></i></span>
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">Memory Size</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-memory mx-auto"></i></span>
+                            </div>
+                            <input id="memorySize" type="text" class="form-control" aria-label="MemorySize">                    
                         </div>
-                        <input id="MemorySize" type="text" class="form-control" aria-label="MemorySize">                    
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Hash Length</label>
-                    <div class="input-group col-sm-10">
-                        <div class="input-group-prepend">
-                                <span class="input-group-text badge-fixed-width"><i class="fas fa-key mx-auto"></i></span>
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">Hash Length</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-key mx-auto"></i></span>
+                            </div>
+                            <input id="hashLength" type="text" class="form-control" aria-label="HashLength">                    
                         </div>
-                        <input id="HashLength" type="text" class="form-control" aria-label="HashLength">                    
                     </div>
-                </div>
-                <div class="row">
-                    <button type="submit" class="btn btn-primary mx-auto">Generate <i class="fas fa-cogs"></i></button>
-                </div>
-            </form>
-
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary mx-auto" onclick="computePassword()">Generate <i class="fas fa-cogs"></i></button>
+                    </div>
+                </form>
+            </div>
 
         </div>
         <script src="libs/argon2-browser/lib/argon2.js"></script>
