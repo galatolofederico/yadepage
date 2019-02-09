@@ -1,0 +1,11 @@
+{
+    "presets": [
+      ["env", {
+        "targets": {
+          "browsers": ["cover 99.5%"],
+          "uglify": true
+        },
+        "modules": false
+      }]
+    ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "yadepage",
+  "version": "1.0.0",
+  "description": "Yeat Another DEterministic PAssword GEnerator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/galatolofederico/yadepage.git"
+  },
+  "keywords": [
+    "deterministic",
+    "password",
+    "generator"
+  ],
+  "author": "Federico A. Galatolo",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/galatolofederico/yadepage/issues"
+  },
+  "homepage": "https://github.com/galatolofederico/yadepage#readme",
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babelify": "^10.0.0",
+    "browserify": "^16.2.3",
+    "gulp": "^4.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-browserify": "^0.5.1"
+  }
+}
