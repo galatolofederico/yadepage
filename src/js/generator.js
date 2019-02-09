@@ -17,9 +17,7 @@ function getPassword(hash, useSymbols){
     let symbols = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
     let characters = letters + (useSymbols ? symbols : "")
     let str = ""
-    for(let elem of hash){
-        str += characters[elem % characters.length]
-    }
+    for(let elem of hash) str += characters[elem % characters.length]
     return str
 }
 

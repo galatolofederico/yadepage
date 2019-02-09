@@ -22,8 +22,14 @@ function generator(){
 
 function html(){
     return gulp.src(["src/html/**/*"])
-    .pipe(gulp.dest("./dist")) 
+    .pipe(gulp.dest(buildDir)) 
 }
+
+function css(){
+    return gulp.src(["src/css/**/*"])
+    .pipe(gulp.dest(buildDir+"/css")) 
+}
+
 
 function config(){
     return gulp.src(["src/config.js"])
@@ -31,18 +37,23 @@ function config(){
     }))
     .pipe(browserify({
     }))
-    .pipe(gulp.dest("./dist"))
+    .pipe(gulp.dest(buildDir))
 }
 
 function libs() {
   return gulp.src(npmDist(), {base:'./node_modules'})
-    .pipe(gulp.dest('./dist/libs'));
+    .pipe(gulp.dest(buildDir+"libs"));
 }
 
 function argon2(){
     return gulp.src(["./node_modules/argon2-browser/**/*.js"])
-    .pipe(gulp.dest("./dist/libs/argon2-browser"))
+    .pipe(gulp.dest(buildDir+"libs/argon2-browser"))
 }
 
-exports.build = gulp.series(clean, generator, html, config, argon2, libs)
+function fontAwesome() {
+    return gulp.src("node_modules/font-awesome/fonts/*")
+    .pipe(gulp.dest(buildDir+"fonts"))
+}
+
+exports.build = gulp.series(clean, generator, html, css, config, argon2, libs)
 exports.default = exports.build
