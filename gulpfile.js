@@ -3,13 +3,15 @@ var babel = require("gulp-babel");
 var browserify = require('gulp-browserify');
 
 
-gulp.task("generator", function () {
-  return gulp.src(["src/generator.js"])
+function generator(){
+   return gulp.src(["src/generator.js"])
     .pipe(babel({
     }))
     .pipe(browserify({
     }))
     .pipe(gulp.dest("dist"))
-})
+}
 
-gulp.task('default', ['transpile-miner'])
+
+exports.build = gulp.series(generator)
+exports.default = exports.build

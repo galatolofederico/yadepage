@@ -22,7 +22,9 @@
   },
   "homepage": "https://github.com/galatolofederico/yadepage#readme",
   "devDependencies": {
+    "@babel/core": "^7.2.2",
     "babel": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
     "babelify": "^10.0.0",
     "browserify": "^16.2.3",
     "gulp": "^4.0.0",
