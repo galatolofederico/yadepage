@@ -13,7 +13,7 @@
             <div class="row">
                     <h5 class="col-12 text-center text-muted">Yet Another DEterministic PAssword GEnerator</h5>
             </div>
-            <div class="row">
+            <div id="paramsForm" class="row">
                 <form class="col-10 mx-auto" onsubmit="return false">
                     <div class="form-group row mt-5">
                         <label class="col-lg-2 col-form-label">Master Password</label>
@@ -93,7 +93,9 @@
                     </div>
                 </form>
             </div>
-
+            <div id="loading" class="row">
+                
+            </div>
         </div>
         <script src="libs/argon2-browser/lib/argon2.js"></script>
         <script src="config.js"></script>

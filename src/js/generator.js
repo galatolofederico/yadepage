@@ -1,13 +1,14 @@
-let sha256 = require('js-sha256');
+let sha256 = require("js-sha256")
+let event = new (require("events").EventEmitter)()
 
-function generator(masterPassword, login, config = {}){
+function generator(masterPassword, username, service, config = {}){
     config = sanitize(config)
     return new Promise(async (res, rej) => {
         let h1 = sha256.hmac.update(masterPassword, config.salt || document.defaultConfig.generation.salt).array()
-        let h2 = sha256.hmac.update(h1, login).array()
+        let h2 = sha256.hmac.update(username, service).array()
         
-        let input = h2
-        let salt = sha256.update(login).array()
+        let input = sha256.update(h1).array()
+        let salt = sha256.hmac.update(h2, h1).array()
         for(let i = 0;i < (config.concatenations || document.defaultConfig.generation.concatenations);i++){
             input = await getGenHash(input, salt, config)
             salt = sha256.update(salt).array()
@@ -39,6 +40,7 @@ function getGenHash(input, salt, config){
             type: config.argonType || document.defaultConfig.generation.argonType,
             distPath: 'libs/argon2-browser/dist'
         }).then(hash => {
+            event.emit("hash")
             res(hash.hash)
         }).catch(e => {
             rej(e)
@@ -56,3 +58,4 @@ function sanitize(config){
 }
 
 document.generator = generator
+document.hashEvent = event
