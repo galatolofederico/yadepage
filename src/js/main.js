@@ -12,7 +12,7 @@ document.computePassword = function(){
         document.getElementById("username").value,
         document.getElementById("service").value,
         config
-    )
+    ).then(console.log)
 }
 
 init()
