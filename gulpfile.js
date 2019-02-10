@@ -50,10 +50,5 @@ function argon2(){
     .pipe(gulp.dest(buildDir+"libs/argon2-browser"))
 }
 
-function fontAwesome() {
-    return gulp.src("node_modules/font-awesome/fonts/*")
-    .pipe(gulp.dest(buildDir+"fonts"))
-}
-
 exports.build = gulp.series(clean, generator, html, css, config, argon2, libs)
 exports.default = exports.build

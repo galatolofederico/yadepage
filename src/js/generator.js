@@ -2,19 +2,77 @@ let sha256 = require("js-sha256")
 let event = new (require("events").EventEmitter)()
 
 function generator(masterPassword, username, service, config = {}){
-    config = sanitize(config)
+    config = loadDefaultsMissing(config)
+    console.log(config)
     return new Promise(async (res, rej) => {
-        let h1 = sha256.hmac.update(masterPassword, config.salt || document.defaultConfig.generation.salt).array()
-        let h2 = sha256.hmac.update(username, service).array()
-        
-        let input = sha256.update(h1).array()
-        let salt = sha256.hmac.update(h2, h1).array()
-        for(let i = 0;i < (config.concatenations || document.defaultConfig.generation.concatenations);i++){
-            input = await getGenHash(input, salt, config)
-            salt = sha256.update(salt).array()
+        let usernameHash = SHA256(username)
+        let serviceHash = SHA256(service)
+        let saltHash = SHA256(config.salt)
+        let masterPasswordHash = SHA256(masterPassword)
+
+        let xor1 = XOR(usernameHash, serviceHash)
+        let xor2 = XOR(saltHash, masterPasswordHash)
+
+        let sha1 = SHA256(xor1)
+        let sha2 = SHA256(xor2)
+
+        let xor3 = XOR(sha1, sha2)
+        let xor4 = XOR(sha2, xor1)
+
+        let argonInput = xor4
+        let argonOutput = undefined
+        let argonLength = 32
+        let shaInput = xor3
+        let shaOutput = undefined
+        for(let i = 0;i < config.concatenations;i++){
+            if(i == config.concatenations - 1) argonLength = config.passwordLength
+            shaOutput = SHA256(shaInput, true)
+            argonOutput = await Argon2(argonInput, shaOutput[0], shaOutput[1], argonLength, config)
+            
+            if(i != config.concatenations - 1){
+                argonInput = argonOutput
+                shaInput = XOR(argonOutput, shaOutput[0])
+            }
         }
-        res(getPassword(input, config.useSymbols))
+        res(getPassword(argonOutput))
     })
+}
+
+function XOR(arr1, arr2){
+    if(arr1.length != arr2.length) throw Error("XOR of arrays with different length")
+    let ret = new Uint8Array(arr1.length)
+    for(let i = 0;i < arr1.length; i++) ret[i] = (arr1[i] ^ arr2[i])
+    return ret
+}
+
+function SHA256(input, getInternal = false){
+    if(!getInternal)
+        return sha256.update(input).array()
+    else {
+        let hash = sha256.update(input)
+        return [hash.array(), hash.h0]
+    }
+}
+
+
+function Argon2(input, salt, iterations, length, config){
+    return new Promise((res, rej) => {
+        argon2.hash({
+            pass: input,
+            salt: salt,
+            time:  Math.abs(iterations) % config.maxIterations,
+            mem:  config.memorySize, 
+            hashLen: length,
+            parallelism: 1,
+            type: config.argonType,
+            distPath: 'libs/argon2-browser/dist'
+        }).then(hash => {
+            event.emit("hash")
+            res(hash.hash)
+        }).catch(e => {
+            rej(e)
+        })
+    }) 
 }
 
 
@@ -27,33 +85,23 @@ function getPassword(hash, useSymbols){
     return str
 }
 
-
-function getGenHash(input, salt, config){
-    return new Promise((res, rej) => {
-        argon2.hash({
-            pass: input,
-            salt: salt,
-            time:  config.iterations || document.defaultConfig.generation.iterations,
-            mem:  config.memorySize || document.defaultConfig.generation.memorySize, 
-            hashLen: config.hashLength || document.defaultConfig.generation.hashLength,
-            parallelism: 1,
-            type: config.argonType || document.defaultConfig.generation.argonType,
-            distPath: 'libs/argon2-browser/dist'
-        }).then(hash => {
-            event.emit("hash")
-            res(hash.hash)
-        }).catch(e => {
-            rej(e)
-        })
-    }) 
-}
-
-function sanitize(config){
+function loadDefaultsMissing(config){
     if(config.concatenations) config.concatenations = Number.parseInt(config.concatenations)
-    if(config.iterations) config.iterations = Number.parseInt(config.iterations)
+    else config.concatenations =  document.defaultConfig.generation.concatenations
+
+    if(config.maxIterations) config.maxIterations = Number.parseInt(config.maxIterations)
+    else config.maxIterations =  document.defaultConfig.generation.maxIterations
+
     if(config.salt) config.salt = config.salt.toString()
+    else config.salt =  document.defaultConfig.generation.salt
+
     if(config.memorySize) config.memorySize = Number.parseInt(config.memorySize)
-    if(config.hashLength) config.hashLength = Number.parseInt(config.hashLength)
+    else config.memorySize =  document.defaultConfig.generation.memorySize
+
+    if(config.passwordLength) config.passwordLength = Number.parseInt(config.passwordLength)
+    else config.passwordLength =  document.defaultConfig.generation.passwordLength
+    
+    config.argonType = document.defaultConfig.generation.argonType
     return config
 }
 
