@@ -3,7 +3,8 @@ let event = new (require("events").EventEmitter)()
 
 function generator(masterPassword, username, service, config = {}){
     config = loadDefaultsMissing(config)
-    console.log(config)
+    event.emit("hash", {max: config.concatenations})
+    
     return new Promise(async (res, rej) => {
         let usernameHash = SHA256(username)
         let serviceHash = SHA256(service)
@@ -55,7 +56,8 @@ function SHA256(input, getInternal = false){
 }
 
 
-function Argon2(input, salt, iterations, length, config){
+async function Argon2(input, salt, iterations, length, config){
+    await syncSleep(10)
     return new Promise((res, rej) => {
         argon2.hash({
             pass: input,
@@ -67,7 +69,7 @@ function Argon2(input, salt, iterations, length, config){
             type: config.argonType,
             distPath: 'libs/argon2-browser/dist'
         }).then(hash => {
-            event.emit("hash")
+            event.emit("hash", {max: config.concatenations})
             res(hash.hash)
         }).catch(e => {
             rej(e)
@@ -103,6 +105,14 @@ function loadDefaultsMissing(config){
     
     config.argonType = document.defaultConfig.generation.argonType
     return config
+}
+
+function syncSleep(t){
+    return new Promise((res, rej) => {
+        setTimeout(() => {
+            res()
+        }, t)
+    })
 }
 
 document.generator = generator
