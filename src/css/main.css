@@ -5,3 +5,7 @@
 label {
     white-space: nowrap
 }
+
+a.a-normal, a:hover.a-normal{
+    color:#333
+  }
