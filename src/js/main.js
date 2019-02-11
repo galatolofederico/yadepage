@@ -2,6 +2,7 @@ let fields = ["concatenations", "maxIterations", "salt", "memorySize", "password
 
 function init(){    
     for(let field of fields) document.getElementById(field).placeholder = document.defaultConfig.generation[field]
+    new ClipboardJS('#copyButton');
 }
 
 document.computePassword = function(){
@@ -15,4 +16,18 @@ document.computePassword = function(){
     ).then(console.log)
 }
 
+let toggled = false;
+function eyeToggle(){
+    if(!toggled){
+        document.getElementById("eye-icon").setAttribute("data-icon", "eye-slash")
+        document.getElementById("computedPassword").setAttribute("type", "text")
+    }
+    else{
+        document.getElementById("eye-icon").setAttribute("data-icon", "eye")
+        document.getElementById("computedPassword").setAttribute("type", "password")
+    }
+    toggled = !toggled
+}
+
+document.eyeToggle = eyeToggle
 init()
