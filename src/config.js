@@ -1,4 +1,5 @@
 document.defaultConfig = {
+    version: 1,
     generation:{
         concatenations: 3, // Number of Argon2 + SHA256 concatenations
         iterations: 10,// Maximum number of Argon2 iterations
