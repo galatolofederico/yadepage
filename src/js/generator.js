@@ -27,12 +27,12 @@ function generator(masterPassword, username, service, config = {}){
         let shaOutput = undefined
         for(let i = 0;i < config.concatenations;i++){
             if(i == config.concatenations - 1) argonLength = config.passwordLength
-            shaOutput = SHA256(shaInput, true)
-            argonOutput = await Argon2(argonInput, shaOutput[0], shaOutput[1], argonLength, config)
+            shaOutput = SHA256(shaInput)
+            argonOutput = await Argon2(argonInput, shaOutput, argonLength, config)
             
             if(i != config.concatenations - 1){
                 argonInput = argonOutput
-                shaInput = XOR(argonOutput, shaOutput[0])
+                shaInput = XOR(argonOutput, shaOutput)
             }
         }
         res(getPassword(argonOutput))
@@ -47,22 +47,17 @@ function XOR(arr1, arr2){
 }
 
 function SHA256(input, getInternal = false){
-    if(!getInternal)
-        return sha256.update(input).array()
-    else {
-        let hash = sha256.update(input)
-        return [hash.array(), hash.h0]
-    }
+    return sha256.update(input).array()
 }
 
 
-async function Argon2(input, salt, iterations, length, config){
+async function Argon2(input, salt, length, config){
     await syncSleep(10)
     return new Promise((res, rej) => {
         argon2.hash({
             pass: input,
             salt: salt,
-            time:  Math.abs(iterations) % config.maxIterations,
+            time: config.iterations,
             mem:  config.memorySize, 
             hashLen: length,
             parallelism: 1,
@@ -91,8 +86,8 @@ function loadDefaultsMissing(config){
     if(config.concatenations) config.concatenations = Number.parseInt(config.concatenations)
     else config.concatenations =  document.defaultConfig.generation.concatenations
 
-    if(config.maxIterations) config.maxIterations = Number.parseInt(config.maxIterations)
-    else config.maxIterations =  document.defaultConfig.generation.maxIterations
+    if(config.iterations) config.iterations = Number.parseInt(config.iterations)
+    else config.iterations =  document.defaultConfig.generation.iterations
 
     if(config.salt) config.salt = config.salt.toString()
     else config.salt =  document.defaultConfig.generation.salt
