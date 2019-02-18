@@ -2,6 +2,8 @@
 
 A **reasonably secure** offline deterministic password generator.
 
+You can try it [here](https://galatolofederico.github.io/yadepage/).
+
 yadepage uses a chain of [SHA256](https://en.wikipedia.org/wiki/SHA-2) and [Argon2](https://en.wikipedia.org/wiki/Argon2) hashing algorithms to generate **strong deterministic passwords**.
 
 ![schema](https://i.imgur.com/B0pcJ5U.png)
