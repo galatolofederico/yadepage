@@ -25,12 +25,19 @@ function generator(masterPassword, username, service, config = {}){
         let argonLength = 32
         let shaInput = xor3
         let shaOutput = undefined
+        let shaIterationsInput = xor4
+        let shaIterationsOutput = undefined
+        let iterationsNumber = undefined
         for(let i = 0;i < config.concatenations;i++){
-            if(i == config.concatenations - 1) argonLength = config.passwordLength
+            if(i == (config.concatenations - 1)) argonLength = config.passwordLength
+
             shaOutput = SHA256(shaInput)
-            argonOutput = await Argon2(argonInput, shaOutput, argonLength, config)
+            shaIterationsOutput = SHA256(shaIterationsInput, true)
+            iterationsNumber = shaIterationsOutput[1], shaIterationsOutput = shaIterationsOutput[0]
+            argonOutput = await Argon2(argonInput, shaOutput, iterationsNumber, argonLength, config)
             
-            if(i != config.concatenations - 1){
+            if(i != (config.concatenations - 1)){
+                shaIterationsInput = XOR(argonOutput, shaIterationsOutput)
                 argonInput = argonOutput
                 shaInput = XOR(argonOutput, shaOutput)
             }
@@ -47,17 +54,21 @@ function XOR(arr1, arr2){
 }
 
 function SHA256(input, getInternal = false){
-    return sha256.update(input).array()
+    if(!getInternal)
+        return sha256.update(input).array()
+    else {
+        let hash = sha256.update(input)
+        return [hash.array(), hash.h0]
+    }
 }
 
-
-async function Argon2(input, salt, length, config){
+async function Argon2(input, salt, iterations, length, config){
     await syncSleep(10)
     return new Promise((res, rej) => {
         argon2.hash({
             pass: input,
             salt: salt,
-            time: config.iterations,
+            time:  Math.abs(iterations) % config.maxIterations,
             mem:  config.memorySize, 
             hashLen: length,
             parallelism: 1,
@@ -71,7 +82,6 @@ async function Argon2(input, salt, length, config){
         })
     }) 
 }
-
 
 function getPassword(hash, useSymbols){
     let letters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
