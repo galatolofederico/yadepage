@@ -1,0 +1,138 @@
+<html>
+    <head>
+        <title>yadepage - Yet Another Deterministic Password Generator</title>
+        <link href="libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
+        <script defer src="libs/@fortawesome/fontawesome-free/js/all.min.js"></script> 
+    </head>
+    <body class="bg-light">
+        <div class="container">
+            <div class="row">
+                    <h1 class="col-12 text-center">yadepage</h1>
+            </div>
+            <div class="row">
+                    <h5 class="col-12 text-center text-muted">Yet Another Deterministic Password Generator</h5>
+            </div>
+            <div id="params" class="row">
+                <form class="col-10 mx-auto" onsubmit="return false">
+                    <div class="form-group row mt-5">
+                        <label class="col-lg-2 col-form-label">Master Password</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-key mx-auto"></i></span>
+                            </div>
+                            <input id="masterPassword" type="password" class="form-control" aria-label="MasterPassword">                    
+                        </div>
+                    </div>
+                    <div class="form-group row mt-5">
+                        <label class="col-lg-2 col-form-label">Username</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-user mx-auto"></i></span>
+                            </div>
+                            <input id="username" type="text" class="form-control" aria-label="Username">                    
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">Service</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-globe mx-auto"></i></span>
+                            </div>
+                            <input id="service" type="text" class="form-control" aria-label="Service">                    
+                        </div>
+                    </div>
+                    <div class="form-group row mt-5">
+                        <label class="col-lg-2 col-form-label">Concatenations</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-dumbbell mx-auto"></i></span>
+                            </div>
+                            <input id="concatenations" type="text" class="form-control" aria-label="Concatenations">                    
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">Iterations</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-sync-alt mx-auto"></i></span>
+                            </div>
+                            <input id="iterations" type="text" class="form-control" aria-label="iterations">                    
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">Salt</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-user-secret mx-auto"></i></span>
+                            </div>
+                            <input id="salt" type="text" class="form-control" aria-label="Salt">                    
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">Memory Size</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-memory mx-auto"></i></span>
+                            </div>
+                            <input id="memorySize" type="text" class="form-control" aria-label="MemorySize">                    
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">Password Length</label>
+                        <div class="input-group col-lg-10">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text badge-fixed-width"><i class="fas fa-shapes mx-auto"></i></span>
+                            </div>
+                            <input id="passwordLength" type="text" class="form-control" aria-label="passwordLength">                    
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary mx-auto" onclick="computePassword()"><i class="fas fa-cogs"></i> Generate</button>
+                    </div>
+                </form>
+            </div>
+            <div id="loading" class="card mt-5" hidden=true>
+                <div class="row justify-content-center mb-2 mt-2">
+                    <h5 class="col-6 text-center">Computing password</h5>
+                </div>
+                <div class="row d-flex justify-content-center mb-2 mt-2">
+                    <div class="col-4 text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center mb-2 mt-2">
+                    <h6 id="stepCounter" class="col-6 text-center text-muted"></h6>
+                </div>
+            </div>
+            <div id="password" class="card mt-5" hidden=true>
+                <div class="row justify-content-center mb-2 mt-2">
+                    <h5 class="col-6 text-center">Computed Password</h5>
+                </div>
+                <div class="row d-flex justify-content-center mb-2 mt-2">
+                    <div class="col-10 text-center">
+                        <div class="input-group mb-3">
+                            <input id="computedPassword" type="password" class="form-control" aria-label="Computed Password">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <a class="a-normal" href="javascript:document.eyeToggle()"><i id="eye-icon" class="fas fa-eye mx-auto"></i></a>
+                                </span>
+                            </div>                       
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center mb-2 mt-2">
+                    <button type="button" class="btn btn-primary ml-1 mr-1" onclick="document.copyToClipboard()">Copy to Clipboard</button>
+                    <button type="button" class="btn btn-secondary ml-1 mr-1" onclick="document.reset()">Go Back</button>
+                </div>
+            </div>
+        </div>
+        <script src="libs/argon2-browser/lib/argon2.js"></script>
+        <script src="config.js"></script>
+        <script src="js/generator.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html> 

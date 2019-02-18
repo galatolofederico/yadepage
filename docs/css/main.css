@@ -1,0 +1,11 @@
+.badge-fixed-width {
+    width: 50px;
+}
+
+label {
+    white-space: nowrap
+}
+
+a.a-normal, a:hover.a-normal{
+    color:#333
+  }
