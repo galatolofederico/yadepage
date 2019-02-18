@@ -61,10 +61,9 @@ function reset(){
 
 document.hashEvent.on("hash", args => {
     step += 1
-    console.log(requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
         document.getElementById("stepCounter").textContent = step+"/"+args.max
-    }))
-    console.log(document.getElementById("stepCounter"),  step+"/"+args.max)
+    })
 })
 
 document.eyeToggle = eyeToggle
