@@ -40,7 +40,7 @@ SHA256|Argon2|Config.js|Can crack the Master Password?|Can generate new Password
 :heavy_multiplication_x:|:heavy_multiplication_x:|:heavy_check_mark:|:heavy_multiplication_x:|:heavy_multiplication_x:
 :heavy_multiplication_x:|:heavy_multiplication_x:|:heavy_multiplication_x:|:heavy_multiplication_x:*|:heavy_multiplication_x:*
 
-\* the complexity of this attack is ![formula](https://latex.codecogs.com/png.download?%5Cdpi%7B120%7D%20O%28H%5E%7B-1%7D%29O%28n%5Em%29) where ![formuma](https://latex.codecogs.com/png.download?%5Cdpi%7B120%7D%20O%28H%5E%7B-1%7D%29) is the complexity of inverting both the hash functions, n is the number of *concatenations* and m is the number of *maximum iterations*
+\* the complexity of this attack is ![formula](https://latex.codecogs.com/gif.latex?O%28H%5E%7B-1%7D%29O%28n%5Em%29) where ![formula](https://latex.codecogs.com/gif.download?%5Cdpi%7B120%7D%20O%28H%5E%7B-1%7D%29) is the complexity of inverting both the hash functions, n is the number of *concatenations* and m is the number of *maximum iterations*
 
 
 ## How to use it
