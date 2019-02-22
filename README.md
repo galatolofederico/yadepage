@@ -8,6 +8,8 @@ yadepage uses a chain of [SHA256](https://en.wikipedia.org/wiki/SHA-2) and [Argo
 
 ![schema](https://i.imgur.com/B0pcJ5U.png)
 
+(the number of concatenations and iterations is fully configurable, this is just an example)
+
 ## Where does it work?
 
 First of all yadepage is **not** supposed to be used **online**. 
@@ -42,7 +44,7 @@ SHA256|Argon2|Config.js|Can crack the Master Password?|Can generate new Password
 :heavy_multiplication_x:|:heavy_multiplication_x:|:heavy_check_mark:|:heavy_multiplication_x:|:heavy_multiplication_x:
 :heavy_multiplication_x:|:heavy_multiplication_x:|:heavy_multiplication_x:|:heavy_multiplication_x:*|:heavy_multiplication_x:*
 
-the complexity of this attack is ![formula1](https://latex.codecogs.com/gif.latex?%5Cdpi%7B120%7D%20O%28H%5E%7B-1%7D%29O%28n%5Em%29) where ![formula2](https://latex.codecogs.com/gif.latex?O%28H%5E%7B-1%7D%29) is the complexity of inverting both the hash functions, n is the number of *concatenations* and m is the number of *maximum iterations*
+\*the complexity of this attack is ![formula1](https://latex.codecogs.com/gif.latex?%5Cdpi%7B120%7D%20O%28H%5E%7B-1%7D%29O%28n%5Em%29) where ![formula2](https://latex.codecogs.com/gif.latex?O%28H%5E%7B-1%7D%29) is the complexity of inverting both the hash functions, n is the number of *concatenations* and m is the number of *maximum iterations*
 
 
 ## How to use it
