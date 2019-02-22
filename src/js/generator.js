@@ -77,13 +77,13 @@ function SHA256(input, getInternal = false){
     }
 }
 
-async function Argon2(input, salt, maxIterations, length, config){
+async function Argon2(input, salt, iterations, length, config){
     await syncSleep(10)
     return new Promise((res, rej) => {
         argon2.hash({
             pass: input,
             salt: salt,
-            time:  Math.abs(maxIterations) % config.maxIterations,
+            time:  Math.abs(iterations) % config.maxIterations,
             mem:  config.memorySize, 
             hashLen: length,
             parallelism: 1,
