@@ -62,13 +62,13 @@ function SHA256(input, getInternal = false){
     }
 }
 
-async function Argon2(input, salt, iterations, length, config){
+async function Argon2(input, salt, maxIterations, length, config){
     await syncSleep(10)
     return new Promise((res, rej) => {
         argon2.hash({
             pass: input,
             salt: salt,
-            time:  Math.abs(iterations) % config.maxIterations,
+            time:  Math.abs(maxIterations) % config.maxIterations,
             mem:  config.memorySize, 
             hashLen: length,
             parallelism: 1,
@@ -96,8 +96,8 @@ function loadDefaultsMissing(config){
     if(config.concatenations) config.concatenations = Number.parseInt(config.concatenations)
     else config.concatenations =  document.defaultConfig.generation.concatenations
 
-    if(config.iterations) config.iterations = Number.parseInt(config.iterations)
-    else config.iterations =  document.defaultConfig.generation.iterations
+    if(config.maxIterations) config.maxIterations = Number.parseInt(config.maxIterations)
+    else config.maxIterations =  document.defaultConfig.generation.maxIterations
 
     if(config.salt) config.salt = config.salt.toString()
     else config.salt =  document.defaultConfig.generation.salt

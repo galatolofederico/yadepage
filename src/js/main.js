@@ -1,4 +1,4 @@
-let fields = ["concatenations", "iterations", "salt", "memorySize", "passwordLength"]
+let fields = ["concatenations", "maxIterations", "salt", "memorySize", "passwordLength"]
 
 function init(){    
     for(let field of fields) document.getElementById(field).placeholder = document.defaultConfig.generation[field]
