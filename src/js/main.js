@@ -26,7 +26,9 @@ document.computePassword = function(){
             document.getElementById("username").value,
             document.getElementById("service").value,
             config
-        ).then(handlePassword)
+        ).then(handlePassword).catch(err => {
+            console.log(err)
+        })
     }, 10)
 }
 
@@ -59,11 +61,22 @@ function reset(){
     document.getElementById("params").hidden = false
 }
 
-document.hashEvent.on("hash", args => {
+document.hashEvent.on("step", args => {
     step += 1
     requestAnimationFrame(() => {
-        document.getElementById("stepCounter").textContent = step+"/"+args.max
+        document.getElementById("stepCounter").textContent = args.phase+" "+step+"/"+args.max
     })
+})
+
+
+document.hashEvent.on("masterpasswordbad", args => {
+    alert("You have submitted the wrong Master Passwrod")
+    document.getElementById("loading").hidden = true
+    document.getElementById("params").hidden = false
+})
+
+document.hashEvent.on("masterpasswordgood", args => {
+    step = 1
 })
 
 document.eyeToggle = eyeToggle

@@ -13,6 +13,7 @@
             <div class="row">
                     <h5 class="col-12 text-center text-muted">Yet Another Deterministic Password Generator</h5>
             </div>
+            <!-- INPUT FORM -->
             <div id="params" class="row">
                 <form class="col-10 mx-auto" onsubmit="return false">
                     <div class="form-group row mt-5">
@@ -93,6 +94,8 @@
                     </div>
                 </form>
             </div>
+
+            <!-- LOADING SPINNER -->
             <div id="loading" class="card mt-5" hidden=true>
                 <div class="row justify-content-center mb-2 mt-2">
                     <h5 class="col-6 text-center">Computing password</h5>
@@ -108,6 +111,8 @@
                     <h6 id="stepCounter" class="col-6 text-center text-muted"></h6>
                 </div>
             </div>
+
+            <!-- PASSWORD FORM -->
             <div id="password" class="card mt-5" hidden=true>
                 <div class="row justify-content-center mb-2 mt-2">
                     <h5 class="col-6 text-center">Computed Password</h5>

@@ -3,8 +3,22 @@ let event = new (require("events").EventEmitter)()
 
 function generator(masterPassword, username, service, config = {}){
     config = loadDefaultsMissing(config)
-    event.emit("hash", {max: config.concatenations})
-    
+    return new Promise(async (res, rej) => {
+        if (config.masterPasswordCheck){
+            let masterPasswordHash = await generatePassword(masterPassword, "", "", config, "check")
+            if(masterPasswordHash != config.masterPasswordCheck){
+                event.emit("masterpasswordbad")
+                rej(Error("Wrong Master Password"))
+                return
+            }
+            event.emit("masterpasswordgood")
+        }
+        res(await generatePassword(masterPassword, username, service, config))
+    })
+}
+
+function generatePassword(masterPassword, username, service, config, phase="compute"){
+    event.emit("hash", {max: config.concatenations, phase: phase})
     return new Promise(async (res, rej) => {
         let usernameHash = SHA256(username)
         let serviceHash = SHA256(service)
@@ -41,6 +55,7 @@ function generator(masterPassword, username, service, config = {}){
                 argonInput = argonOutput
                 shaInput = XOR(argonOutput, shaOutput)
             }
+            event.emit("step", {max: config.concatenations, phase: phase})
         }
         res(getPassword(argonOutput))
     })
@@ -75,7 +90,6 @@ async function Argon2(input, salt, maxIterations, length, config){
             type: config.argonType,
             distPath: 'libs/argon2-browser/dist'
         }).then(hash => {
-            event.emit("hash", {max: config.concatenations})
             res(hash.hash)
         }).catch(e => {
             rej(e)
@@ -108,7 +122,9 @@ function loadDefaultsMissing(config){
     if(config.passwordLength) config.passwordLength = Number.parseInt(config.passwordLength)
     else config.passwordLength =  document.defaultConfig.generation.passwordLength
     
+    config.version = document.defaultConfig.version
     config.argonType = document.defaultConfig.generation.argonType
+    config.masterPasswordCheck = document.defaultConfig.masterPasswordCheck
     return config
 }
 

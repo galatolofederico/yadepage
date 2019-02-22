@@ -7,5 +7,6 @@ document.defaultConfig = {
         memorySize: 1024, // Memory size for Argon2
         passwordLength: 24, // Password length
         argonType: argon2.ArgonType.Argon2d // Type of the Argon2 hash
-    }
+    },
+    //masterPasswordCheck: "0STR77eWEzrWFNC6be3u55ei" // Password generated without username and service 
 }
